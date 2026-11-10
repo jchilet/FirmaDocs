@@ -99,6 +99,8 @@ public sealed class CircuitoFirma
 
         if (string.IsNullOrWhiteSpace(motivo))
             throw new CircuitoFirmaException("El motivo de rechazo es obligatorio.");
+        if (Estado != EstadoDocumento.EnCircuito)
+            throw new CircuitoFirmaException("El documento no está en circuito de firma.");
 
         _rechazos.Add(new Rechazo(firmante, motivo, Version, instante));
         Estado = EstadoDocumento.Devuelto;

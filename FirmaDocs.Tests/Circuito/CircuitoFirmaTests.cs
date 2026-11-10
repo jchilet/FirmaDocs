@@ -93,4 +93,16 @@ public class CircuitoFirmaTests
         Assert.Single(circuito.Rechazos);
         Assert.Equal(new Rechazo(Ana, "Falta sustento legal", 1, Ahora), circuito.Rechazos[0]);
     }
+
+    [Fact]
+    public void Rechazar_EnEstadoDevuelto_LanzaExcepcion_RF06()
+    {
+        var circuito = CircuitoEnviado();
+        circuito.Rechazar(Ana, "Observación inicial", Ahora);
+
+        var ex = Assert.Throws<CircuitoFirmaException>(() =>
+            circuito.Rechazar(Ana, "Segundo rechazo no permitido", Ahora.AddMinutes(5)));
+
+        Assert.Equal("El documento no está en circuito de firma.", ex.Message);
+    }
 }
