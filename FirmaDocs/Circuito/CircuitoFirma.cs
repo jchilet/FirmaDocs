@@ -11,6 +11,7 @@ public sealed class CircuitoFirma
 {
     private readonly List<Firmante> _firmantes;
     private readonly List<Firma> _firmas = [];
+    private readonly List<Rechazo> _rechazos = [];
 
     /// <summary>Crea el circuito de un documento en estado <see cref="EstadoDocumento.Borrador"/>.</summary>
     /// <param name="documentoId">Identificador del documento.</param>
@@ -50,6 +51,9 @@ public sealed class CircuitoFirma
 
     /// <summary>Historial de aprobaciones, en orden cronológico.</summary>
     public IReadOnlyList<Firma> Firmas => _firmas;
+
+    /// <summary>Historial de rechazos, en orden cronológico.</summary>
+    public IReadOnlyList<Rechazo> Rechazos => _rechazos;
 
     /// <summary>Firmante que debe aprobar ahora; <c>null</c> si el documento no está en circuito.</summary>
     public Firmante? FirmanteEnTurno =>
@@ -95,5 +99,8 @@ public sealed class CircuitoFirma
 
         if (string.IsNullOrWhiteSpace(motivo))
             throw new CircuitoFirmaException("El motivo de rechazo es obligatorio.");
+
+        _rechazos.Add(new Rechazo(firmante, motivo, Version, instante));
+        Estado = EstadoDocumento.Devuelto;
     }
 }

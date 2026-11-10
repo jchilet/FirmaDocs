@@ -9,6 +9,9 @@ public enum EstadoDocumento
     /// <summary>Enviado: espera la aprobación del firmante en turno.</summary>
     EnCircuito,
 
+    /// <summary>Devuelto al autor por rechazo de un firmante.</summary>
+    Devuelto,
+
     /// <summary>Todos los firmantes aprobaron la versión vigente.</summary>
     Aprobado
 }

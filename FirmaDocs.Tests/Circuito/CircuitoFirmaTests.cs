@@ -81,4 +81,16 @@ public class CircuitoFirmaTests
 
         Assert.Equal("El motivo de rechazo es obligatorio.", ex.Message);
     }
+
+    [Fact]
+    public void Rechazar_EnTurno_PasaADevueltoYRegistraEvidencia_RF01()
+    {
+        var circuito = CircuitoEnviado();
+
+        circuito.Rechazar(Ana, "Falta sustento legal", Ahora);
+
+        Assert.Equal(EstadoDocumento.Devuelto, circuito.Estado);
+        Assert.Single(circuito.Rechazos);
+        Assert.Equal(new Rechazo(Ana, "Falta sustento legal", 1, Ahora), circuito.Rechazos[0]);
+    }
 }
