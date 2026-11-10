@@ -68,4 +68,17 @@ public class CircuitoFirmaTests
 
         Assert.Equal("Un firmante no puede repetirse en el circuito.", ex.Message);
     }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("   ")]
+    public void Rechazar_MotivoNuloOVacio_LanzaExcepcion_RF05(string? motivo)
+    {
+        var circuito = CircuitoEnviado();
+
+        var ex = Assert.Throws<CircuitoFirmaException>(() => circuito.Rechazar(Ana, motivo!, Ahora));
+
+        Assert.Equal("El motivo de rechazo es obligatorio.", ex.Message);
+    }
 }

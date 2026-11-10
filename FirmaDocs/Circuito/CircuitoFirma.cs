@@ -83,4 +83,17 @@ public sealed class CircuitoFirma
         if (_firmas.Count == _firmantes.Count)
             Estado = EstadoDocumento.Aprobado;
     }
+
+    /// <summary>Registra el rechazo del firmante en turno.</summary>
+    /// <param name="firmante">Firmante que rechaza.</param>
+    /// <param name="motivo">Motivo del rechazo.</param>
+    /// <param name="instante">Momento del rechazo.</param>
+    /// <exception cref="CircuitoFirmaException">El motivo de rechazo es inválido.</exception>
+    public void Rechazar(Firmante firmante, string motivo, DateTimeOffset instante)
+    {
+        ArgumentNullException.ThrowIfNull(firmante);
+
+        if (string.IsNullOrWhiteSpace(motivo))
+            throw new CircuitoFirmaException("El motivo de rechazo es obligatorio.");
+    }
 }
