@@ -1,3 +1,5 @@
+using System;
+
 namespace FirmaDocs;
 
 /// <summary>Aprobación registrada por un firmante sobre una versión del documento.</summary>
