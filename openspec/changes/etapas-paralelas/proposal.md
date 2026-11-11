@@ -1,7 +1,7 @@
-# Proposal: etapas-paralelas
+ï»¿# Proposal: etapas-paralelas
 
 ## Contexto
-Se requiere planificar el trabajo del circuito completo de firma con ejecución por etapas paralelas, preservando las funcionalidades existentes y manteniendo trazabilidad con los RF vigentes. El plan debe contemplar desde el inicio tanto el flujo normal de rechazo y nueva vuelta como los estados terminales.
+Se requiere planificar el trabajo del circuito completo de firma con ejecuciÃ³n por etapas paralelas, preservando las funcionalidades existentes y manteniendo trazabilidad con los RF vigentes. El plan debe contemplar desde el inicio tanto el flujo normal de rechazo y nueva vuelta como los estados terminales.
 
 ## Objetivo
 Definir una secuencia de trabajo con dependencias estrictas entre tareas, organizada en etapas:
@@ -11,14 +11,17 @@ Definir una secuencia de trabajo con dependencias estrictas entre tareas, organi
 
 ## Alcance
 - Incluye el circuito completo de firma en esta iniciativa.
-- Incluye reglas para flujo normal (`EnCircuito` ? `Devuelto` ? nueva vuelta) y flujo terminal (`Rechazado`) desde la primera etapa.
-- Incluye definición explícita de bloqueos entre etapas y criterios de entrada/salida de cada etapa.
+- Incluye reglas para flujo normal (`EnCircuito` â†’ `Devuelto` â†’ nueva vuelta) y flujo terminal (`Rechazado`) desde la primera etapa.
+- Incluye definiciÃ³n explÃ­cita de bloqueos entre etapas y criterios de entrada/salida de cada etapa.
+
+## Capabilities
+- `circuito-firma`
 
 ## Dependencias estrictas y orden de etapas
 
 ### Etapa 1: Legal (secuencial)
-**Propósito**
-- Establecer base de reglas de dominio para rechazo y vuelta nueva sobre la que dependen las demás áreas.
+**PropÃ³sito**
+- Establecer base de reglas de dominio para rechazo y vuelta nueva sobre la que dependen las demÃ¡s Ã¡reas.
 
 **Bloquea a**
 - Bloquea el inicio de `Finanzas` y `Riesgos`.
@@ -29,26 +32,26 @@ Definir una secuencia de trabajo con dependencias estrictas entre tareas, organi
 ---
 
 ### Etapa 2: Finanzas y Riesgos (paralela)
-**Propósito**
+**PropÃ³sito**
 - Ejecutar en paralelo validaciones y escenarios de negocio sobre la base cerrada en `Legal`.
 
 **Dependencia de entrada**
 - Requiere Etapa 1 completada.
 
-**Relación interna**
-- `Finanzas` y `Riesgos` no se bloquean entre sí.
+**RelaciÃ³n interna**
+- `Finanzas` y `Riesgos` no se bloquean entre sÃ­.
 - Ambas deben respetar contratos y reglas establecidos por `Legal`.
 
 **Bloquea a**
 - `Gerencia` no puede iniciar hasta que finalicen **ambas** ramas: `Finanzas` y `Riesgos`.
 
 **Criterio de salida**
-- Consolidación de escenarios en paralelo sin romper compatibilidad con funcionalidades existentes.
+- ConsolidaciÃ³n de escenarios en paralelo sin romper compatibilidad con funcionalidades existentes.
 
 ---
 
 ### Etapa 3: Gerencia (secuencial)
-**Propósito**
+**PropÃ³sito**
 - Integrar y cerrar el flujo completo tras la convergencia de `Finanzas` y `Riesgos`.
 
 **Dependencia de entrada**
@@ -57,17 +60,21 @@ Definir una secuencia de trabajo con dependencias estrictas entre tareas, organi
 **Criterio de salida**
 - Flujo de circuito completo validado extremo a extremo, incluyendo casos normales y terminales.
 
-## Criterios de éxito de la propuesta
-- Orden de ejecución respetado: `Legal` ? (`Finanzas` || `Riesgos`) ? `Gerencia`.
-- Dependencias estrictas documentadas y observables (qué bloquea a qué).
-- Cobertura explícita de flujo normal y terminal desde la primera etapa.
+## Criterios de Ã©xito de la propuesta
+- Orden de ejecuciÃ³n respetado: `Legal` â†’ (`Finanzas` || `Riesgos`) â†’ `Gerencia`.
+- Dependencias estrictas documentadas y observables (quÃ© bloquea a quÃ©).
+- Cobertura explÃ­cita de flujo normal y terminal desde la primera etapa.
 - Sin degradar funcionalidades existentes del circuito.
 
 ## Fuera de alcance
 - Persistencia.
 - Interfaz de usuario.
 - Refactor no funcional.
-- Cambios en firmas públicas.
+- Cambios en firmas pÃºblicas.
+
+## Impacto en capacidades existentes
+- El constructor actual de `CircuitoFirma` debe seguir siendo compatible con la lista plana de firmantes, interpretÃ¡ndola como una Ãºnica etapa secuencial.
+- `FirmanteEnTurno` debe conservar su comportamiento para circuitos secuenciales y adaptarse a la identificaciÃ³n de los firmantes pendientes en etapas paralelas.
 
 ## Preguntas abiertas
 - Ninguna por el momento.
