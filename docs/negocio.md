@@ -1,0 +1,15 @@
+# Negocio — FirmaDocs
+- Documento: contenido que se somete a un circuito de firma.
+- Versión: revisión identificable de un documento.
+- Autor: persona que inicia el circuito de firma.
+- Firmante: persona que participa en el circuito.
+- Firma: aprobación de una versión por un firmante.
+- Rechazo: decisión de no aprobar una versión.
+- Circuito de firma: secuencia de firmantes.
+- Vuelta: ronda de revisión del documento.
+- Todo rechazo debe incluir un motivo obligatorio.
+- Un circuito admite como máximo 3 vueltas.
+- Un firmante no puede repetirse en el circuito.
+- Las firmas anteriores no aprueban la versión vigente.
+- El historial nunca se borra.
+- Referencia: specs/001_rechazo_y_vueltas.
